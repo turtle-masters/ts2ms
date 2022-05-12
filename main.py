@@ -92,14 +92,17 @@ def write_converted_file(original_file, new_timestamps):
 
 
 if __name__ == '__main__':
-    input_file_path = Path(input('path to .csv file to convert: '))
+    input_file_path = input('path to .csv file to convert: ')
+    if (input_file_path[0] == "\"" and input_file_path[len(input_file_path) - 1] == "\""):
+        input_file_path = input_file_path[1: len(input_file_path) - 1]
+    input_file_path = Path(input_file_path)
 
     with open(input_file_path, encoding='utf-8') as file:
         timestamps = get_timestamps(file)
         converted_ts = convert_to_ms(timestamps)
         output_path, output_name = get_output_path(input_file_path)
 
-        with open(Path(output_path + '\\' + output_name + '_CONVERTED.csv'), 'w+') as new_file:
+        with open(Path(output_path + output_name + '_CONVERTED.csv'), 'w+') as new_file:
             new_file.writelines(converted_ts)
 
         print("Timestamps successfully added to log file!")
